@@ -4,12 +4,13 @@
 - Since: 2019-10-30
 - Status Note: Still needs some review from community members  
 - Supersedes: [Aries RFC 0050](https://github.com/hyperledger/aries-rfcs/tree/master/concepts/0050-wallets)
-- Start Date: 2018-10-30 (date you started working on this idea)
+- Start Date: 2018-10-30
 - Tags: feature, protocol
 
 ## Summary
 
-![map youarehere][youarehere.png]
+![mapyouarehere](./youarehere.png)
+
 This RFC will cover the following: 
 
 - What in the world is a Key Management Service?
