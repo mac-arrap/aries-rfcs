@@ -54,7 +54,7 @@ Here are threats that all KMS services and why we think this is a good implement
 ### ***Threats***
 - Memory access patterns leakage - Attacker can infer contents and/or importance of data based on how it is accessed and frequency of access. Attacker learns the set of matching records.
 - Volume leakage - Attacker learns the number of records/responses.
-Search pattern leakage - Attacker can infer the contents and/or importance of data based on search patterns–attacker can easily judge whether any two queries are generated from the same keywords or not.
+- Search pattern leakage - Attacker can infer the contents and/or importance of data based on search patterns–attacker can easily judge whether any two queries are generated from the same keywords or not.
 - Rank leakage - Attacker can infer or learn which data was queried
 Side channel leakage - Attacker can access or learn the value of the secret material used to protect data confidentiality and integrity through side channels like memory inspection, RAM scraping, attacks with swap access, and timing attacks[3].
 - Microarchitectural attacks - Attacker is able to learn secrets through covert channels that target processors (Spectre/Meltdown)
