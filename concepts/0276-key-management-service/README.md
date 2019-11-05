@@ -45,7 +45,7 @@ The enclave then is securely unlocked and the key creation process begins for th
 
 ## Drawbacks
 
-This
+KMS presents a new way of doing key management. This is not wrapped up in a nice package that has already made assumptions for you. Therefore bringing in overhead to implement and will take a bit for the community to get used to the concept and workings of KMS. 
 
 ## Rationale and alternatives
 
@@ -77,6 +77,14 @@ These are our derived goals from the threats and adversaries mentioned above.
 
 ## Prior art
 
+| Aries-KMS |   Indy-Wallet  |
+| ------------- |-------------|
+| Securely creates, deletes, manages keys and their metadata|  securely creates, manages keys| 
+| Does NOT manage general storage|  manages general storage| 
+| Integrates with OS keystore / ACL / biometrics (LOX)| No LOX support |
+|Leverages HMS / TEE / secure enclave when present| Is secure enclave like|
+|Plugins for different persistence mechanisms|No plugable persistance mechanism|
+|Plugins for different crypto approaches|No plugable crypto|
 
 ## Unresolved questions
 
