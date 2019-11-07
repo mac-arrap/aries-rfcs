@@ -53,7 +53,7 @@ A consumer of KMS must decide who has access to the KMS. This can be done throug
 
 ```c
 //
-// Created by Camilo Parra on 2019-11-06.
+// Created by Camilo Parra (Kiva) on 2019-11-06.
 //
 
 #ifndef lox_h
@@ -77,6 +77,79 @@ extern int32_t lox_open(const char * const config);
 #### Cryptography
 
 The cryptography layer is where all the basic functions of key creation live. These include create, delete, sign, verify, encrypt, decrypt, aggregate.
+
+
+```c
+//
+// Created by Camilo Parra (Kiva) on 2019-11-07.
+//
+
+#ifndef kms_crypto_h
+#define kms_crypto_h
+
+struct ExternError {
+    int32_t code;
+    char* message;
+};
+
+/*
+*
+*  @param [in] `config` -
+*  @param [out] `error` - an error structure that can be checked if an error occurs. Includes a code and string message. If success, no further checking is needed
+*  @return 1 - success, 0 otherwise
+*/
+extern int32_t crypto_create(const char * const config, const struct ExternError* error);
+
+/*
+*
+*  @param [in] `config` -
+*  @param [out] `error` - an error structure that can be checked if an error occurs. Includes a code and string message. If success, no further checking is needed
+*  @return 1 - success, 0 otherwise
+*/
+extern int32_t crypto_delete(const char * const config, const struct ExternError* error);
+
+/*
+*
+*  @param [in] `config` -
+*  @param [out] `error` - an error structure that can be checked if an error occurs. Includes a code and string message. If success, no further checking is needed
+*  @return 1 - success, 0 otherwise
+*/
+extern int32_t crypto_sign(const char * const config, const struct ExternError* error);
+
+/*
+*
+*  @param [in] `config` -
+*  @param [out] `error` - an error structure that can be checked if an error occurs. Includes a code and string message. If success, no further checking is needed
+*  @return 1 - success, 0 otherwise
+*/
+extern int32_t crypto_verify(const char * const config, const struct ExternError* error);
+
+/*
+*
+*  @param [in] `config` -
+*  @param [out] `error` - an error structure that can be checked if an error occurs. Includes a code and string message. If success, no further checking is needed
+*  @return 1 - success, 0 otherwise
+*/
+extern int32_t crypto_encrypt(const char * const config, const struct ExternError* error);
+
+/*
+*
+*  @param [in] `config` -
+*  @param [out] `error` - an error structure that can be checked if an error occurs. Includes a code and string message. If success, no further checking is needed
+*  @return 1 - success, 0 otherwise
+*/
+extern int32_t crypto_decrypt(const char * const config, const struct ExternError* error);
+
+/*
+*
+*  @param [in] `config` -
+*  @param [out] `error` - an error structure that can be checked if an error occurs. Includes a code and string message. If success, no further checking is needed
+*  @return 1 - success, 0 otherwise
+*/
+extern int32_t crypto_aggregate(const char * const config, const struct ExternError* error);
+
+#endif //kms_crypto_h
+```
 
 #### Storage
 
