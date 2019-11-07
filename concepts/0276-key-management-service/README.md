@@ -66,7 +66,7 @@ A consumer of KMS must decide who has access to the KMS. This can be done throug
 *  @return 1 - success, 0 otherwise
 */
 
-extern int32_t lox_open(const char * const config);
+extern int32_t lox_open(const char * const config, const struct ExternError* error);
 
 #endif //lox_h
 ```
@@ -92,45 +92,91 @@ struct ExternError {
     char* message;
 };
 
-/*
-*
-*  @param [in] `config` -
-*  @param [out] `error` - an error structure that can be checked if an error occurs. Includes a code and string message. If success, no further checking is needed
-*  @return 1 - success, 0 otherwise
-*/
-extern int32_t crypto_create(const char * const config, const struct ExternError* error);
+struct ByteBuffer {
+    int64_t len;
+    uint8_t *data;
+};
 
 /*
 *
-*  @param [in] `config` -
+*  @param [in] `config` - create a key with the following characteristics specified by the json that matches this json-schema
+*  {
+*    "$schema": "http://json-schema.org/draft-07/schema#",
+*    "type": "object",
+*    "required": ["algorithm", "use"],
+*    "properties": {
+*        "algorithm": {
+*           "type": "string",
+*           "enum": ["ed25519", "secp256k1", "rsa2048", "rsa3072", "rsa4096", "p-256", "p-384", "p-521", "bls", "dh2048", "dh3072", "dh4096", "x25519", "aes128cbchmac256", "aes256cbchmac512", "aes128gcm", "aes256gcm", "xchacha20poly1305"] //not exhaustive
+*        },
+*        "use": {
+*           "type": "array",
+*           "minItems": 1,
+*           "uniqueItems: true,
+*           "items": {
+*               "type": "string",
+*               "enum": ["signature", "encryption", "keyexchange", "threshold-signature", "threshold-encryption"]
+*           }           
+*        }
+*    },
+*  }
+*  @param [out] `kid` - a utf8 byte string that is the key identifier null terminated
 *  @param [out] `error` - an error structure that can be checked if an error occurs. Includes a code and string message. If success, no further checking is needed
 *  @return 1 - success, 0 otherwise
 */
-extern int32_t crypto_delete(const char * const config, const struct ExternError* error);
+extern int32_t crypto_create(char** kid,
+                             const char* const config,
+                             const struct ExternError* error);
 
 /*
 *
-*  @param [in] `config` -
+*  @param [in] `kid` - a utf8 byte string that is the key identifier null terminated
 *  @param [out] `error` - an error structure that can be checked if an error occurs. Includes a code and string message. If success, no further checking is needed
 *  @return 1 - success, 0 otherwise
 */
-extern int32_t crypto_sign(const char * const config, const struct ExternError* error);
+extern int32_t crypto_delete(const char * const kid,
+                             const struct ExternError* error);
 
 /*
 *
-*  @param [in] `config` -
+*  @param [in] `kid` - a utf8 byte string that is the key identifier null terminated
+*  @param [in] `message` - a byte array to sign
+*  @param [out] `signature` - signature as a byte array
 *  @param [out] `error` - an error structure that can be checked if an error occurs. Includes a code and string message. If success, no further checking is needed
 *  @return 1 - success, 0 otherwise
 */
-extern int32_t crypto_verify(const char * const config, const struct ExternError* error);
+extern int32_t crypto_sign(const struct ByteArray* signature,
+                           const char * const kid,
+                           const struct ByteBuffer* const message,
+                           const struct ExternError* error);
 
 /*
 *
-*  @param [in] `config` -
+*  @param [in] `kid` - a utf8 byte string that is the key identifier null terminated
+*  @param [in] `message` - a byte array message to check if signed will match `signature`
+*  @param [in] `signature` - signature as a byte array
 *  @param [out] `error` - an error structure that can be checked if an error occurs. Includes a code and string message. If success, no further checking is needed
 *  @return 1 - success, 0 otherwise
 */
-extern int32_t crypto_encrypt(const char * const config, const struct ExternError* error);
+extern int32_t crypto_verify(const char * const kid,
+                             const struct ByteArray* const message,
+                             const struct ByteArray* const signature,
+                             const struct ExternError* error);
+
+/*
+*
+*  @param [in] `kid` - a utf8 byte string that is the key identifier null terminated
+*  @param [in] `aad` - a byte array of additional authenticated data 
+*  @param [in] `plaintext` - a byte array to be encrypted
+*  @param [out] `ciphertext` - the encrypted data as a byte array
+*  @param [out] `error` - an error structure that can be checked if an error occurs. Includes a code and string message. If success, no further checking is needed
+*  @return 1 - success, 0 otherwise
+*/
+extern int32_t crypto_encrypt(const struct ByteArray* ciphertext,
+                              const char * const kid,
+                              const struct ByteArray* const aad,
+                              const struct ByteArray* const plaintext,
+                              const struct ExternError* error);
 
 /*
 *
