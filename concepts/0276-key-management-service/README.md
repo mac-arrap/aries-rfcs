@@ -201,6 +201,28 @@ extern int32_t crypto_aggregate(const char * const config, const struct ExternEr
 
 In the storage layer we are able to plugin a database, enclaves, HSMs, Key Rings, and others. This layer contains the keys and their metadata.
 
+
+```c
+//
+// Created by Camilo Parra (Kiva) on 2019-11-06.
+//
+
+#ifndef lox_h
+#define lox_h
+
+/* opens the desired storage by using keyring, enclave, etc
+*
+*  @param [in] `config` - a json string that details what or where key is stored, type of storage, name of storage
+*  @param [out] `error` - an error structure that can be checked if an error occurs. Includes a code and string message. If success, no further checking is needed
+*  @return 1 - success, 0 otherwise
+*/
+
+extern int32_t lox_open(const char * const config, const struct ExternError* error);
+
+#endif //lox_h
+```
+
+
 #### Logic
 
 This layer ties everything together in the KSM. Here the consumer of KSM decides how they will handle keys and what they will use them for. This is layer will also close and delete all data from memory if that is the way that the consumer chooses to handle their keys.
